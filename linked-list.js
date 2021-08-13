@@ -80,7 +80,7 @@ class LinkedList {
 
   getAt(idx) {
     if (idx >= this.length || idx < 0) {
-      throw new Error("Invalid index")
+      throw new Error("Index not found")
     }
     return this._get(idx).val
   }
@@ -88,13 +88,31 @@ class LinkedList {
   /** setAt(idx, val): set val at idx to val */
 
   setAt(idx, val) {
+    if (idx >= this.length || idx < 0) {
+      throw new Error("Index not found")
+    }
 
+    let cur = this._get(idx)
+    cur.val = val
   }
 
   /** insertAt(idx, val): add node w/val before idx. */
 
   insertAt(idx, val) {
+    if (idx > this.length || idx < 0) {
+      throw new Error("Index not found")
+    }
 
+    if (idx === 0) return this.unshift(val)
+    if (idx === this.length) return this.push(val)
+
+    let prev = this._get(idx - 1)
+
+    let newNode = new Node(val)
+    newNode.next = prev.next
+    prev.next = newNode
+
+    this.length++
   }
 
   /** removeAt(idx): return & remove item at idx, */
@@ -126,7 +144,17 @@ class LinkedList {
   /** average(): return an average of all values in the list */
 
   average() {
-    
+    if (this.length === 0) return 0
+
+    let total = 0
+    let cur = this.head
+
+    while (cur) {
+      total += cur.val
+      cur = cur.next
+    }
+
+    return total / this.length
   }
 }
 
